@@ -1,0 +1,494 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Afasia, agnosia ou apraxia?</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#FBF6EE; --paper:#FFFFFF; --ink:#301906; --muted:#7A6453; --line:#EADFCF;
+  --af:#3A77C4; --af-soft:#E3EDFA;
+  --ag:#2E9E6B; --ag-soft:#DDF3E8;
+  --ap:#E0584B; --ap-soft:#FBE3E0;
+  --ou:#6B7280; --ou-soft:#ECEDEF;
+  --gold:#F2A93B; --teal:#1DA4B6;
+  --shadow:0 10px 30px rgba(48,25,6,.10);
+  --on-ink:#FFFFFF; --note:#FFF4E0; --field:#FFFFFF;
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){ --bg:#1D1510; --paper:#2A1F17; --ink:#F6ECDF; --muted:#C2B09E; --line:#4B3A2C; --on-ink:#1D1510; --note:#3A2A18; --field:#2A1F17; --shadow:0 10px 30px rgba(0,0,0,.35); color-scheme:dark } }
+:root[data-theme="dark"]{ --bg:#1D1510; --paper:#2A1F17; --ink:#F6ECDF; --muted:#C2B09E; --line:#4B3A2C; --on-ink:#1D1510; --note:#3A2A18; --field:#2A1F17; --shadow:0 10px 30px rgba(0,0,0,.35); color-scheme:dark }
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--ink);font-family:Nunito,"Segoe UI",Roboto,Arial,sans-serif}
+button{font-family:inherit;cursor:pointer}
+.wrap{max-width:1180px;margin:0 auto;padding-block:18px 40px;padding-inline:16px}
+header{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.brand h1{margin:0;font-size:clamp(22px,3.2vw,34px);font-weight:900;letter-spacing:.5px}
+.brand h1 .a1{color:var(--af)} .brand h1 .a2{color:var(--ag)} .brand h1 .a3{color:var(--ap)}
+.brand p{margin:2px 0 0;color:var(--muted);font-weight:600;font-size:14px}
+.tools{display:flex;gap:8px;flex-wrap:wrap}
+.btn{border:0;border-radius:999px;padding:10px 16px;font-weight:800;font-size:14px;background:var(--paper);color:var(--ink);box-shadow:0 2px 8px rgba(48,25,6,.08)}
+.btn:hover{transform:translateY(-1px)}
+.btn.dark{background:var(--ink);color:var(--on-ink)}
+.btn:focus-visible,.chip:focus-visible,.dot:focus-visible,.placa:focus-visible{outline:3px solid var(--teal);outline-offset:2px}
+@media (prefers-reduced-motion: reduce){*{animation:none!important;transition:none!important}}
+nav.rodadas{display:flex;gap:8px;flex-wrap:wrap;margin:16px 0 10px}
+.chip{border:2px solid var(--line);background:var(--paper);border-radius:999px;padding:8px 14px;font-weight:800;font-size:14px;color:var(--muted)}
+.chip.on{border-color:var(--ink);color:var(--ink)}
+.dots{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}
+.dot{width:34px;height:34px;border-radius:50%;border:0;font-weight:900;font-size:13px;background:var(--paper);color:var(--muted);box-shadow:0 1px 4px rgba(0,0,0,.08)}
+.dot.cur{background:var(--ink);color:var(--on-ink)}
+.dot.seen{outline:3px solid var(--teal);outline-offset:-3px}
+.grid{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);gap:18px}
+.card,.side,.panel{min-width:0}
+body{background:var(--bg);color:var(--ink)}
+.brand h1{text-wrap:balance}
+@media (max-width:900px){.grid{grid-template-columns:1fr}}
+.card{background:var(--paper);border-radius:26px;box-shadow:var(--shadow);padding:26px 28px;position:relative;overflow:hidden}
+.card:before{content:"";position:absolute;inset:0 0 auto 0;height:10px;background:linear-gradient(90deg,var(--af),var(--ag),var(--ap),var(--ou))}
+.meta{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:4px}
+.num{background:var(--ink);color:var(--on-ink);border-radius:14px;padding:6px 12px;font-weight:900;font-size:15px}
+.rod{font-weight:800;color:var(--muted);font-size:14px}
+.card h2{font-size:clamp(24px,3vw,34px);margin:10px 0 12px;font-weight:900;line-height:1.15}
+.texto{font-size:clamp(18px,2.1vw,24px);line-height:1.55;margin:0}
+.timer{display:flex;align-items:center;gap:14px;margin-top:22px;flex-wrap:wrap}
+.ring{width:84px;height:84px;position:relative}
+.ring svg{transform:rotate(-90deg)}
+.ring span{position:absolute;inset:0;display:grid;place-items:center;font-weight:900;font-size:24px}
+.hint{color:var(--muted);font-weight:700;font-size:14px}
+.side{display:flex;flex-direction:column;gap:14px}
+.panel{background:var(--paper);border-radius:22px;box-shadow:var(--shadow);padding:18px 18px}
+.panel h3{margin:0 0 10px;font-size:16px;font-weight:900;letter-spacing:.3px;text-transform:uppercase;color:var(--muted)}
+.placas{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.placa{border:3px solid transparent;border-radius:18px;padding:14px 10px;font-weight:900;font-size:clamp(16px,1.8vw,21px);color:#fff;transition:.15s}
+.placa small{display:block;font-weight:700;font-size:12px;opacity:.9;margin-top:2px}
+.placa.af{background:var(--af)} .placa.ag{background:var(--ag)} .placa.ap{background:var(--ap)} .placa.ou{background:var(--ou)}
+.placa.sel{border-color:var(--ink);transform:scale(1.03);box-shadow:0 0 0 4px rgba(48,25,6,.15)}
+.placa.dim{opacity:.35}
+.steps{display:flex;flex-direction:column;gap:8px}
+.step{border-radius:16px;background:var(--bg);padding:12px 14px;border:2px dashed var(--line)}
+.step .q{font-weight:900;font-size:15px;display:flex;justify-content:space-between;gap:8px;align-items:center}
+.step .a{margin-top:6px;font-size:16px;line-height:1.45;display:none}
+.step.open{border-style:solid;background:var(--paper)}
+.step.open .a{display:block}
+.step .tag{font-size:12px;font-weight:800;color:var(--muted)}
+.resposta{border-radius:18px;padding:16px;display:none;color:#fff}
+.resposta.show{display:block;animation:pop .35s ease}
+.resposta b{font-size:22px;font-weight:900;display:block}
+.resposta p{margin:6px 0 0;font-size:15px;line-height:1.45}
+.conversa{margin-top:10px;border-radius:14px;padding:10px 12px;background:rgba(255,255,255,.18);font-weight:700;font-size:14px}
+@keyframes pop{from{transform:scale(.96);opacity:0}to{transform:none;opacity:1}}
+.navbar{display:flex;justify-content:space-between;gap:10px;margin-top:16px;flex-wrap:wrap}
+.big{padding:14px 22px;font-size:16px}
+.intro,.final{margin-top:18px;background:var(--paper);border-radius:26px;box-shadow:var(--shadow);padding:28px}
+.intro h2,.final h2{margin:0 0 8px;font-size:clamp(24px,3vw,32px);font-weight:900}
+.cols{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin:18px 0}
+@media (max-width:800px){.cols{grid-template-columns:1fr 1fr}}
+.tile{border-radius:18px;padding:16px;color:#fff}
+.tile b{font-size:20px;font-weight:900;display:block}
+.tile span{font-size:15px;line-height:1.4;display:block;margin-top:4px}
+.qs{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+@media (max-width:800px){.qs{grid-template-columns:1fr 1fr}}
+.qbox{background:var(--bg);border-radius:16px;padding:14px;font-weight:800;font-size:16px}
+.qbox i{font-style:normal;display:inline-grid;place-items:center;width:28px;height:28px;border-radius:50%;background:var(--ink);color:var(--on-ink);margin-right:6px;font-size:14px}
+.excluir{margin-top:18px;background:var(--note);border-radius:16px;padding:14px 16px;font-size:16px;line-height:1.5}
+.frases{display:flex;flex-direction:column;gap:12px;margin-top:14px}
+.frase{background:var(--bg);border-radius:18px;padding:16px 18px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.frase p{margin:0;font-size:clamp(17px,2vw,22px);font-weight:700;flex:1 1 320px}
+.frase .rev{min-width:150px}
+.kbd{font-size:12px;color:var(--muted);font-weight:700;margin-top:18px}
+
+.roleta{margin-top:18px;background:var(--paper);border-radius:26px;box-shadow:var(--shadow);padding:24px;display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:24px;align-items:center}
+@media (max-width:900px){.roleta{grid-template-columns:1fr}}
+.wheelbox{position:relative;width:min(520px,86vw);max-width:100%;aspect-ratio:1;margin:0 auto}
+.wheelbox svg#wheel{width:100%;height:100%;transition:transform 4.8s cubic-bezier(.12,.72,.08,1);filter:drop-shadow(0 12px 22px rgba(48,25,6,.18))}
+.pointer{position:absolute;left:50%;top:-6px;transform:translateX(-50%);width:0;height:0;border-left:22px solid transparent;border-right:22px solid transparent;border-top:44px solid var(--ink);z-index:3;filter:drop-shadow(0 3px 3px rgba(0,0,0,.25))}
+.hub{position:absolute;inset:0;margin:auto;width:24%;height:24%;border-radius:50%;background:var(--ink);color:var(--on-ink);border:6px solid var(--paper);display:grid;place-items:center;font-weight:900;font-size:clamp(14px,2.2vw,22px);z-index:2;cursor:pointer;box-shadow:0 6px 16px rgba(0,0,0,.25)}
+.hub:hover{transform:scale(1.04)}
+.rpanel h2{margin:0 0 8px;font-size:clamp(24px,3vw,32px);font-weight:900}
+.rpanel p{font-size:17px;line-height:1.5;margin:0 0 12px}
+.sorteio{border-radius:22px;padding:20px;background:var(--bg);min-height:150px;display:flex;flex-direction:column;justify-content:center;gap:10px}
+.sorteio .n{font-size:15px;font-weight:900;color:var(--muted);text-transform:uppercase;letter-spacing:.5px}
+.sorteio .t{font-size:clamp(22px,2.6vw,30px);font-weight:900;line-height:1.15}
+.sorteio.pop{animation:pop .4s ease;background:var(--note)}
+.opts{display:flex;flex-direction:column;gap:8px;margin-top:14px;font-weight:700;font-size:15px}
+.opts label{display:flex;gap:8px;align-items:center;cursor:pointer}
+.opts input{width:20px;height:20px;accent-color:#1DA4B6}
+.restam{font-weight:800;color:var(--muted);font-size:14px}
+.confete{position:fixed;top:-12px;width:10px;height:14px;border-radius:3px;z-index:50;pointer-events:none;animation:cai linear forwards}
+@keyframes cai{to{transform:translateY(105vh) rotate(720deg);opacity:.9}}
+.hide{display:none!important}
+footer{margin-top:24px;color:var(--muted);font-size:12px;font-weight:600;text-align:center}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="brand">
+      <h1><span class="a1">Afasia</span>, <span class="a2">agnosia</span> ou <span class="a3">apraxia</span>?</h1>
+      <p>Cartas-relâmpago | Aula 08 | Neuropsicologia | Profa. Dra. Géssica Peres <span id="badge" style="display:inline-block;margin-left:6px;padding:3px 10px;border-radius:999px;font-weight:900;font-size:12px;color:#fff"></span></p>
+    </div>
+    <div class="tools">
+      <button class="btn" id="bIntro">Como funciona</button>
+      <button class="btn" id="bRoleta" style="background:var(--gold);color:var(--ink)">Roleta</button>
+      <button class="btn" id="bCartas">Cartas em ordem</button>
+      <button class="btn" id="bFinal">Fechamento</button>
+      <button class="btn dark" id="bFull">Tela cheia</button>
+    </div>
+  </header>
+
+  <!-- INTRO -->
+  <section class="intro" id="intro">
+    <h2>Antes de escolher, pense junto</h2>
+    <p style="font-size:18px;line-height:1.5;margin:0">A professora mostra um caso, em ordem ou sorteado na roleta. Em dupla, vocês conversam e escolhem uma hipótese, no tempo que a professora combinar. Não há pontos nem placar: o que interessa é o caminho do raciocínio, e cada escolha diferente é uma boa conversa.</p>
+    <div class="cols">
+      <div class="tile" style="background:var(--af)"><b>Afasia</b><span>O problema está na linguagem: compreender ou produzir.</span></div>
+      <div class="tile" style="background:var(--ag)"><b>Agnosia</b><span>O problema está no reconhecimento do que se percebe.</span></div>
+      <div class="tile" style="background:var(--ap)"><b>Apraxia</b><span>O problema está na organização da ação aprendida.</span></div>
+      <div class="tile" style="background:var(--ou)"><b>Outra coisa</b><span>Força, sensação, audição, visão, compreensão ou memória.</span></div>
+    </div>
+    <h3 style="margin:6px 0 10px;font-size:18px">As quatro perguntas de cada caso</h3>
+    <div class="qs">
+      <div class="qbox"><i>1</i>O que o paciente consegue fazer?</div>
+      <div class="qbox"><i>2</i>O que ele não consegue fazer?</div>
+      <div class="qbox"><i>3</i>Qual processo parece comprometido?</div>
+      <div class="qbox"><i>4</i>Qual outra hipótese precisa ser descartada?</div>
+    </div>
+    <div class="excluir"><b>E sempre:</b> o que eu preciso excluir antes de concluir? Força muscular, sensação (visão, audição, tato), compreensão, atenção e memória vêm antes dos três A.</div>
+    <div class="navbar"><button class="btn big" id="bStart">Seguir as cartas em ordem</button><button class="btn dark big" id="bStartR" style="background:var(--gold);color:var(--ink)">Girar a roleta</button></div>
+  </section>
+
+
+  <!-- ROLETA -->
+  <section class="roleta hide" id="roleta">
+    <div class="wheelbox">
+      <div class="pointer"></div>
+      <svg id="wheel" viewBox="-210 -210 420 420"></svg>
+      <div class="hub" id="hub">GIRAR</div>
+    </div>
+    <div class="rpanel">
+      <h2>Roleta dos casos</h2>
+      <p>Clique em girar. O caso em que a roleta parar é o da vez: em dupla, vocês conversam pelo tempo combinado, e depois a turma pensa em voz alta junto. Não vale ponto, vale raciocínio.</p>
+      <div class="sorteio" id="sorteio"><span class="n">Aguardando o giro</span><span class="t">Qual caso vai sair?</span></div>
+      <div class="navbar" style="margin-top:12px">
+        <button class="btn dark big" id="bGirar" style="background:var(--gold);color:var(--ink)">Girar a roleta</button>
+        <button class="btn dark big hide" id="bAbrir">Abrir o caso</button>
+      </div>
+      <div class="opts">
+        <label><input type="checkbox" id="optTira" checked> Tirar da roleta os casos que já saíram</label>
+        <label><input type="checkbox" id="optRes"> Incluir as cartas de reserva</label>
+        <span class="restam" id="restam"></span>
+        <button class="btn" id="bRecarregar" style="align-self:flex-start">Recolocar todos os casos</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- JOGO -->
+  <section id="jogo" class="hide">
+    <nav class="rodadas" id="rodadas"></nav>
+    <div class="dots" id="dots"></div>
+    <div class="grid">
+      <article class="card">
+        <div class="meta"><span class="num" id="cNum"></span><span class="rod" id="cRod"></span></div>
+        <h2 id="cTit"></h2>
+        <p class="texto" id="cTxt"></p>
+        <div class="timer">
+          <div class="ring" id="ringBox">
+            <svg width="84" height="84"><circle cx="42" cy="42" r="36" style="stroke:var(--line)" stroke-width="9" fill="none"/><circle id="arc" cx="42" cy="42" r="36" stroke="#1DA4B6" stroke-width="9" fill="none" stroke-linecap="round" stroke-dasharray="226.2" stroke-dashoffset="0"/></svg>
+            <span id="tNum">2:00</span>
+          </div>
+          <button class="btn dark" id="tBtn">Iniciar</button>
+          <button class="btn" id="tReset">Zerar</button>
+          <label class="hint" style="display:flex;align-items:center;gap:6px">Tempo:
+            <select id="tSel" style="font:inherit;font-weight:800;border:2px solid var(--line);border-radius:12px;padding:6px 8px;background:var(--field);color:var(--ink)">
+              <option value="60">1 minuto</option><option value="120" selected>2 minutos</option><option value="180">3 minutos</option><option value="300">5 minutos</option><option value="0">Sem cronômetro</option>
+            </select></label>
+          <span class="hint" id="tHint">Conversem em dupla antes de escolher.</span>
+        </div>
+      </article>
+      <aside class="side">
+        <div class="panel">
+          <h3>Hipótese da turma</h3>
+          <div class="placas" id="placas"></div>
+          <div class="hint" style="margin-top:8px">Marque a hipótese que a turma mais escolheu. Pode trocar a qualquer momento.</div>
+        </div>
+        <div class="panel hide" id="pensem">
+          <h3>Pensem juntos</h3>
+          <div class="qs" style="grid-template-columns:1fr 1fr">
+            <div class="qbox"><i>1</i>O que o paciente consegue fazer?</div>
+            <div class="qbox"><i>2</i>O que ele não consegue fazer?</div>
+            <div class="qbox"><i>3</i>Qual processo parece comprometido?</div>
+            <div class="qbox"><i>4</i>Qual outra hipótese precisa ser descartada?</div>
+          </div>
+          <div class="excluir" style="margin-top:12px;font-size:15px"><b>E o bônus:</b> que exame vocês fariam para confirmar a hipótese?</div>
+        </div>
+        <div class="panel" id="painelProf">
+          <h3>O raciocínio, passo a passo</h3>
+          <div class="steps" id="steps"></div>
+          <div class="navbar" style="margin-top:12px">
+            <button class="btn" id="bStep">Revelar próximo passo</button>
+            <button class="btn dark" id="bAns">Mostrar resposta esperada</button>
+          </div>
+        </div>
+        <div class="resposta" id="resp"></div>
+      </aside>
+    </div>
+    <div class="navbar">
+      <button class="btn big" id="bPrev">Carta anterior</button>
+      <span style="display:flex;gap:10px;flex-wrap:wrap"><button class="btn big hide" id="bVoltaRoleta" style="background:var(--gold);color:var(--ink)">Voltar à roleta</button><button class="btn dark big" id="bNext">Próxima carta</button></span>
+    </div>
+    <div class="kbd">Atalhos: na roleta, espaço gira e abre o caso. Nas cartas: setas para mudar de carta, espaço para o cronômetro, P para o próximo passo, R para a resposta, F para tela cheia.</div>
+  </section>
+
+  <!-- FINAL -->
+  <section class="final hide" id="final">
+    <h2>Qual etapa falhou?</h2>
+    <p style="font-size:18px;margin:0">Leia cada frase, deixe a turma responder em voz alta e depois revele.</p>
+    <div class="frases" id="frases"></div>
+    <div class="excluir" style="margin-top:20px"><b>Para levar:</b> antes de escolher qualquer A, pergunte o que precisa ser excluído. Na afasia, a pessoa consegue compreender ou produzir linguagem? Na agnosia, consegue reconhecer o que percebe? Na apraxia, consegue organizar uma ação aprendida?</div>
+    <div class="navbar"><button class="btn big" id="bBack">Voltar às cartas</button><span></span></div>
+  </section>
+
+  <footer>Todos os casos são fictícios, escritos para a atividade a partir do conteúdo das aulas 06, 07 e 08. Universidade do Vale do Itajaí | Curso de Psicologia | 2026/2</footer>
+</div>
+
+<script>
+const MODO = 'aluno';
+const CARTAS = [{"n": 1, "titulo": "O objeto conhecido", "texto": "O examinador mostra uma escova de dentes e pergunta: O que é isso? O paciente responde: É para... para escovar... os dentes. Não consegue produzir a palavra escova. Quando o examinador oferece duas opções, escova ou colher, responde na hora: Escova.", "rodada": 1}, {"n": 2, "titulo": "O objeto sem significado", "texto": "O examinador mostra uma chave, sem deixar tocar. O paciente olha e diz: Não sei o que é. Descreve o tamanho, a cor e o formato, mas não diz que é uma chave. Mesmo vendo o examinador colocar a chave na fechadura, continua sem reconhecer a função.", "rodada": 1}, {"n": 3, "titulo": "Eu sei o que é, mas não consigo fazer", "texto": "O examinador entrega um pente e pergunta: O que é isso? Um pente. Para que serve? Para pentear o cabelo. Mostre como você usaria. O paciente segura o pente de forma inadequada e faz movimentos desorganizados, apesar de compreender o comando e ter força suficiente.", "rodada": 1}, {"n": 4, "titulo": "O objeto que a mão não reconhece", "texto": "O examinador coloca uma moeda na mão do paciente, sem deixar que ele veja. Ele manipula o objeto e diz: Não sei o que é. Quando pode olhar, reconhece na hora: É uma moeda.", "rodada": 1}, {"n": 5, "titulo": "O gesto que não funciona", "texto": "O examinador pede: Mostre como você faz um sinal de positivo. O paciente compreende e explica: É colocar o polegar para cima. Quando tenta fazer, configura a mão de forma errada. Perguntado de novo, explica corretamente.", "rodada": 1}, {"n": 6, "titulo": "O discurso sem sentido", "texto": "O examinador pergunta: O que você fez hoje de manhã? O paciente fala rápido e com segurança: Acordei a mesa da janela e depois o café foi andando com a minha filha amanhã. Quando o examinador pede, só com palavras, que ele levante a mão, ele não faz. Quando o examinador levanta a mão e pede que copie, ele copia corretamente.", "rodada": 2}, {"n": 7, "titulo": "A foto que não é reconhecida", "texto": "O examinador mostra a fotografia de um garfo e depois um garfo real, sem deixar tocar. O paciente não reconhece nenhum dos dois. Mas, quando o examinador pergunta: Com que objeto você espetaria um pedaço de carne?, ele responde: Garfo.", "rodada": 2}, {"n": 8, "titulo": "Ação em etapas", "texto": "Sobre a mesa: xícara, colher, pote de café e açúcar. O examinador pede: Prepare uma xícara de café. O paciente reconhece todos os objetos e explica a função de cada um. Mas põe açúcar na xícara vazia, mexe antes de pôr o café e depois enfia a colher no pote de açúcar.", "rodada": 2}, {"n": 9, "titulo": "O beijo que não sai", "texto": "O examinador faz o gesto de mandar um beijo. O paciente compreende e explica: É mandar um beijo. Quando tenta imitar, faz outro movimento com os lábios e com a mão. Não tem fraqueza no rosto, e move os lábios normalmente quando come.", "rodada": 2}, {"n": 10, "titulo": "Eu vejo, mas não sei quem é", "texto": "O examinador mostra a fotografia da filha do paciente. Ele descreve: É uma mulher, cabelo escuro, está sorrindo. Mas não sabe quem é. Quando a filha entra na sala e fala oi, pai, ele reconhece na hora.", "rodada": 2}, {"n": 11, "titulo": "A instrução não é compreendida", "texto": "O examinador diz: Coloque a mão direita sobre a cabeça, depois a mão esquerda sobre o ombro e depois bata palma. O paciente não realiza a sequência. Quando o examinador demonstra cada movimento separadamente, ele imita todos corretamente.", "rodada": 2}, {"n": 12, "titulo": "O caso desafio: a caneta", "texto": "O examinador mostra uma caneta. Caneta. Para quê? Para escrever. Escreva seu nome. O paciente segura a caneta, mas não consegue escrever o nome: as letras saem erradas e fora de ordem. Em seguida, o examinador escreve o próprio nome e pede: Copie. O paciente copia corretamente.", "rodada": 2}, {"n": 13, "titulo": "Não é tudo apraxia", "texto": "O paciente não consegue levar a colher à boca quando o examinador pede. Durante a avaliação, observa-se fraqueza importante no braço direito e dificuldade para controlar os movimentos da mão.", "rodada": 3}, {"n": 14, "titulo": "Não é tudo agnosia", "texto": "O paciente não reconhece um objeto mostrado pelo examinador. Durante a avaliação, percebe-se que ele enxerga muito mal e não distingue os detalhes dos objetos.", "rodada": 3}, {"n": 15, "titulo": "Não é tudo afasia", "texto": "O paciente responde errado às perguntas do examinador. Quando recebe instruções por gesto ou por demonstração, faz tudo corretamente. Durante a avaliação, observa-se dificuldade auditiva importante.", "rodada": 3}, {"n": 16, "titulo": "A frase que não sai", "texto": "O examinador pergunta: Onde você mora? O paciente tenta: Eu... eu... moro... em... Faz esforço, não encontra as palavras, mas escolhe a resposta certa entre opções. Reconhece objetos, faz gestos sob comando e compreende instruções simples.", "rodada": 4}, {"n": 17, "titulo": "A palavra errada", "texto": "O examinador mostra uma tesoura. O paciente diz: É... um cortador... uma faca... tesoura! Reconhece o objeto, sabe para que serve e demonstra o uso corretamente.", "rodada": 4}, {"n": 18, "titulo": "A xícara que não chega à boca", "texto": "O examinador entrega uma xícara vazia. O paciente diz: Xícara, para beber. Pedido para mostrar como beberia, segura corretamente, mas leva a xícara ao lado do rosto e a afasta sem completar o movimento.", "rodada": 4}];
+const PL = {
+  'AFASIA':{k:'af',nome:'Afasia',sub:'linguagem',cor:'var(--af)'},
+  'AGNOSIA':{k:'ag',nome:'Agnosia',sub:'reconhecimento',cor:'var(--ag)'},
+  'APRAXIA':{k:'ap',nome:'Apraxia',sub:'ação',cor:'var(--ap)'},
+  'OUTRA COISA':{k:'ou',nome:'Outra coisa',sub:'força, sensação...',cor:'var(--ou)'}
+};
+const RODADAS = {1:'Rodada 1: casos diretos',2:'Rodada 2: contrastes e armadilhas',3:'Rodada 3: não é tudo A',4:'Reserva'};
+const PASSOS = [['consegue','1. O que consegue fazer?'],['nao','2. O que não consegue?'],['processo','3. Qual processo está comprometido?'],['descartar','4. O que precisa ser descartado?']];
+let idx = 0, rodada = 1, passo = 0, escolha = {}, vistos = new Set();
+const $ = s => document.querySelector(s);
+
+function lista(){ return CARTAS.filter(c => c.rodada === rodada); }
+
+function montaRodadas(){
+  const nav = $('#rodadas'); nav.innerHTML = '';
+  Object.entries(RODADAS).forEach(([r,nome]) => {
+    const b = document.createElement('button');
+    b.className = 'chip' + (+r === rodada ? ' on' : '');
+    b.textContent = nome;
+    b.onclick = () => { rodada = +r; idx = 0; mostra(); };
+    nav.appendChild(b);
+  });
+}
+function montaDots(){
+  const box = $('#dots'); box.innerHTML = '';
+  lista().forEach((c,i) => {
+    const b = document.createElement('button');
+    b.className = 'dot' + (i === idx ? ' cur' : '') + (vistos.has(c.n) ? ' seen' : '');
+    b.textContent = c.n; b.title = c.titulo;
+    b.onclick = () => { idx = i; mostra(); };
+    box.appendChild(b);
+  });
+}
+function montaPlacas(c){
+  const box = $('#placas'); box.innerHTML = '';
+  Object.entries(PL).forEach(([chave,p]) => {
+    const b = document.createElement('button');
+    const sel = escolha[c.n];
+    b.className = 'placa ' + p.k + (sel === chave ? ' sel' : '') + (sel && sel !== chave ? ' dim' : '');
+    b.innerHTML = p.nome + '<small>' + p.sub + '</small>';
+    b.onclick = () => { escolha[c.n] = (escolha[c.n] === chave ? undefined : chave); montaPlacas(c); if ($('#resp').classList.contains('show')) resposta(); };
+    box.appendChild(b);
+  });
+}
+function montaPassos(c){
+  if (MODO === 'aluno') return;
+  const box = $('#steps'); box.innerHTML = '';
+  PASSOS.forEach(([k,q],i) => {
+    const d = document.createElement('div');
+    d.className = 'step' + (i < passo ? ' open' : '');
+    d.innerHTML = '<div class="q">' + q + '<span class="tag">' + (i < passo ? '' : 'clique para ver') + '</span></div><div class="a">' + c[k] + '.</div>';
+    d.onclick = () => { passo = Math.max(passo, i+1); montaPassos(c); };
+    box.appendChild(d);
+  });
+  $('#bStep').disabled = passo >= PASSOS.length;
+  $('#bStep').style.opacity = passo >= PASSOS.length ? .45 : 1;
+}
+function resposta(){
+  if (MODO === 'aluno') return;
+  const c = lista()[idx]; const p = PL[c.placa]; const r = $('#resp');
+  r.style.background = p.cor;
+  let conversa = '';
+  const e = escolha[c.n];
+  if (e && e !== c.placa) {
+    conversa = '<div class="conversa">A turma pensou em ' + PL[e].nome.toLowerCase() + '. Boa pergunta para conversar: que dado do caso levou a essa hipótese, e que dado a afasta?</div>';
+  } else if (e) {
+    conversa = '<div class="conversa">A turma chegou à mesma hipótese. Agora vale conferir se as quatro perguntas foram respondidas.</div>';
+  }
+  r.innerHTML = '<b>Resposta esperada: ' + p.nome + '</b><p><strong>Para confirmar:</strong> ' + c.bonus + '</p>' + conversa;
+  r.classList.add('show');
+  passo = PASSOS.length; montaPassos(c);
+}
+function mostra(){
+  const L = lista(); if (idx >= L.length) idx = L.length - 1; if (idx < 0) idx = 0;
+  const c = L[idx]; vistos.add(c.n);
+  $('#cNum').textContent = 'Carta ' + c.n;
+  $('#cRod').textContent = RODADAS[c.rodada];
+  $('#cTit').textContent = c.titulo;
+  $('#cTxt').textContent = c.texto;
+  passo = 0; $('#resp').classList.remove('show');
+  montaRodadas(); montaDots(); montaPlacas(c); montaPassos(c); resetTimer();
+  $('#bVoltaRoleta').classList.toggle('hide', !modoRoleta);
+  $('#bPrev').style.visibility = (idx === 0 && rodada === 1) ? 'hidden' : 'visible';
+  $('#bNext').textContent = (idx === L.length - 1) ? (rodada < 3 ? 'Próxima rodada' : (rodada === 3 ? 'Ir ao fechamento' : 'Ir ao fechamento')) : 'Próxima carta';
+}
+function tela(q){ ['#intro','#jogo','#final','#roleta'].forEach(s => $(s).classList.toggle('hide', s !== q)); window.scrollTo(0,0); }
+function next(){
+  const L = lista();
+  if (idx < L.length - 1) { idx++; mostra(); }
+  else if (rodada < 3) { rodada++; idx = 0; mostra(); }
+  else { tela('#final'); }
+}
+function prev(){
+  if (idx > 0) { idx--; mostra(); }
+  else if (rodada > 1) { rodada--; idx = lista().length - 1; mostra(); }
+}
+
+/* cronômetro */
+let DUR = 120, t = 120, timer = null; const TOT = 226.2;
+try { const v = localStorage.getItem('tempoCartas'); if (v !== null) { DUR = +v; } } catch(e) {}
+function fmt(x){ const m = Math.floor(x/60), s = x % 60; return m + ':' + String(s).padStart(2,'0'); }
+function pinta(){ $('#tNum').textContent = fmt(t); $('#arc').style.strokeDashoffset = DUR ? TOT * (1 - t/DUR) : 0; $('#arc').style.stroke = t <= 10 ? '#E0584B' : '#1DA4B6'; }
+function resetTimer(){
+  clearInterval(timer); timer = null; t = DUR; pinta();
+  const sem = DUR === 0;
+  $('#ringBox').classList.toggle('hide', sem); $('#tBtn').classList.toggle('hide', sem); $('#tReset').classList.toggle('hide', sem);
+  $('#tBtn').textContent = 'Iniciar ' + (DUR >= 60 ? (DUR/60) + (DUR === 60 ? ' minuto' : ' minutos') : '');
+  $('#tHint').textContent = sem ? 'Sem cronômetro: conversem em dupla o tempo que precisarem.' : 'Conversem em dupla antes de escolher.';
+}
+function toggleTimer(){
+  if (DUR === 0) return;
+  if (timer) { clearInterval(timer); timer = null; $('#tBtn').textContent = 'Continuar'; return; }
+  if (t === 0) { t = DUR; }
+  $('#tBtn').textContent = 'Pausar';
+  timer = setInterval(() => { t--; pinta(); if (t <= 0) { clearInterval(timer); timer = null; $('#tBtn').textContent = 'Recomeçar'; $('#tHint').textContent = 'Tempo! Qual é a hipótese de vocês?'; } }, 1000);
+}
+$('#tSel').value = String(DUR);
+$('#tSel').onchange = e => { DUR = +e.target.value; try { localStorage.setItem('tempoCartas', DUR); } catch(err) {} resetTimer(); };
+
+/* fechamento */
+const FRASES = ['Eu sei o que é, mas não consigo dizer o nome.','Eu vejo o objeto, mas não consigo reconhecer o que ele é.','Eu sei o que é, sei para que serve e entendo o comando, mas não consigo organizar a ação.'];
+function montaFrases(){
+  const box = $('#frases'); box.innerHTML = '';
+  if (MODO === 'aluno') { $('#final p').textContent = 'Leiam cada frase e digam, em voz alta, qual A ela descreve.'; FRASES.forEach(f => { const d = document.createElement('div'); d.className = 'frase'; d.innerHTML = '<p>' + f + '</p><span class="hint">Qual A?</span>'; box.appendChild(d); }); return; }
+  FRASES.forEach(([f,a]) => {
+    const d = document.createElement('div'); d.className = 'frase';
+    const b = document.createElement('button'); b.className = 'btn big rev'; b.textContent = 'Revelar';
+    b.onclick = () => { b.textContent = PL[a].nome; b.style.background = PL[a].cor; b.style.color = '#fff'; };
+    d.innerHTML = '<p>' + f + '</p>'; d.appendChild(b); box.appendChild(d);
+  });
+}
+
+$('#bStart').onclick = () => { modoRoleta = false; tela('#jogo'); mostra(); };
+
+if (MODO === 'aluno') {
+  $('#painelProf').classList.add('hide'); $('#resp').classList.add('hide'); $('#pensem').classList.remove('hide');
+  $('#badge').textContent = 'Versão do aluno'; $('#badge').style.background = '#1DA4B6';
+  document.querySelector('#jogo .kbd').textContent = 'Atalhos: na roleta, espaço gira e abre o caso. Nas cartas: setas para mudar de carta e espaço para o cronômetro.';
+  document.querySelector('#placas').nextElementSibling.textContent = 'Marquem a hipótese da dupla. A resposta vem na conversa com a turma.';
+  document.querySelector('#pensem').parentElement.querySelector('.panel h3').textContent = 'Hipótese da dupla';
+} else {
+  $('#badge').textContent = 'Versão da professora | com respostas'; $('#badge').style.background = '#E0584B';
+}
+
+/* ROLETA */
+const CORES = ['#3A77C4','#F2A93B','#2E9E6B','#E965BF','#1DA4B6','#E0584B','#7B61C9','#FB8C2E','#5B8C3A','#C2185B','#0E7C86','#9C6B30'];
+let fora = new Set(), girando = false, angulo = 0, sorteada = null, modoRoleta = false;
+function naRoleta(){ return CARTAS.filter(c => (c.rodada < 4 || $('#optRes').checked) && !fora.has(c.n)); }
+function desenhaRoda(){
+  const L = naRoleta(), svg = $('#wheel'); svg.innerHTML = '';
+  $('#restam').textContent = L.length + (L.length === 1 ? ' caso na roleta' : ' casos na roleta');
+  if (!L.length){ svg.innerHTML = '<circle r="200" fill="#EADFCF"/><text y="8" text-anchor="middle" font-size="22" font-weight="900" fill="#301906">Todos os casos saíram!</text>'; return; }
+  const n = L.length, a = 2*Math.PI/n, R = 200;
+  L.forEach((c,i) => {
+    const a0 = -Math.PI/2 + i*a, a1 = a0 + a;
+    const x0 = R*Math.cos(a0), y0 = R*Math.sin(a0), x1 = R*Math.cos(a1), y1 = R*Math.sin(a1);
+    const p = document.createElementNS('http://www.w3.org/2000/svg','path');
+    p.setAttribute('d', n === 1 ? 'M0,-200 A200,200 0 1,1 -0.01,-200 Z' : `M0,0 L${x0},${y0} A${R},${R} 0 ${a>Math.PI?1:0},1 ${x1},${y1} Z`);
+    p.setAttribute('fill', CORES[i % CORES.length]); p.setAttribute('stroke','#fff'); p.setAttribute('stroke-width','3');
+    svg.appendChild(p);
+    const am = a0 + a/2, tx = 150*Math.cos(am), ty = 150*Math.sin(am);
+    const t = document.createElementNS('http://www.w3.org/2000/svg','text');
+    t.setAttribute('x', tx); t.setAttribute('y', ty); t.setAttribute('text-anchor','middle'); t.setAttribute('dominant-baseline','central');
+    t.setAttribute('font-size', n > 14 ? 22 : 28); t.setAttribute('font-weight','900'); t.setAttribute('fill','#fff');
+    t.setAttribute('transform', `rotate(${am*180/Math.PI+90} ${tx} ${ty})`);
+    t.textContent = c.n; svg.appendChild(t);
+  });
+  svg.appendChild(Object.assign(document.createElementNS('http://www.w3.org/2000/svg','circle'),{}));
+  svg.lastChild.setAttribute('r','203'); svg.lastChild.setAttribute('fill','none'); svg.lastChild.setAttribute('stroke','#301906'); svg.lastChild.setAttribute('stroke-width','6');
+}
+function girar(){
+  if (girando) return;
+  const L = naRoleta(); if (!L.length) return;
+  girando = true; $('#bAbrir').classList.add('hide');
+  const s = $('#sorteio'); s.classList.remove('pop'); s.innerHTML = '<span class="n">Girando...</span><span class="t">Qual caso vai sair?</span>';
+  const n = L.length, passo = 360/n, i = Math.floor(Math.random()*n);
+  const centro = i*passo + passo/2;
+  const jitter = (Math.random()-0.5)*passo*0.6;
+  const atual = ((angulo % 360) + 360) % 360;
+  let alvo = (360 - centro - jitter) % 360; if (alvo < 0) alvo += 360;
+  angulo += (5 + Math.floor(Math.random()*3))*360 + ((alvo - atual + 360) % 360);
+  $('#wheel').style.transform = `rotate(${angulo}deg)`;
+  setTimeout(() => {
+    girando = false; sorteada = L[i];
+    s.classList.add('pop');
+    s.innerHTML = '<span class="n">Saiu a carta ' + sorteada.n + ' | ' + RODADAS[sorteada.rodada] + '</span><span class="t">' + sorteada.titulo + '</span>';
+    $('#bAbrir').classList.remove('hide');
+    confete();
+  }, 4900);
+}
+function abrirSorteada(){
+  if (!sorteada) return;
+  if ($('#optTira').checked) fora.add(sorteada.n);
+  rodada = sorteada.rodada; idx = lista().findIndex(c => c.n === sorteada.n);
+  modoRoleta = true; tela('#jogo'); mostra(); sorteada = null;
+  $('#bAbrir').classList.add('hide');
+  $('#sorteio').classList.remove('pop'); $('#sorteio').innerHTML = '<span class="n">Aguardando o giro</span><span class="t">Qual caso vai sair?</span>';
+}
+function confete(){
+  for (let k = 0; k < 60; k++){
+    const c = document.createElement('div'); c.className = 'confete';
+    c.style.left = Math.random()*100 + 'vw'; c.style.background = CORES[k % CORES.length];
+    c.style.animationDuration = (1.6 + Math.random()*1.6) + 's'; c.style.animationDelay = (Math.random()*0.4) + 's';
+    document.body.appendChild(c); setTimeout(() => c.remove(), 3800);
+  }
+}
+function abreRoleta(){ modoRoleta = true; tela('#roleta'); desenhaRoda(); }
+$('#hub').onclick = girar; $('#bGirar').onclick = girar; $('#bAbrir').onclick = abrirSorteada;
+$('#optRes').onchange = desenhaRoda; $('#bRecarregar').onclick = () => { fora.clear(); desenhaRoda(); };
+$('#bRoleta').onclick = abreRoleta; $('#bStartR').onclick = abreRoleta;
+$('#bCartas').onclick = () => { modoRoleta = false; tela('#jogo'); mostra(); };
+$('#bVoltaRoleta').onclick = () => { abreRoleta(); };
+
+$('#bIntro').onclick = () => tela('#intro');
+$('#bFinal').onclick = () => { montaFrases(); tela('#final'); };
+$('#bBack').onclick = () => { tela('#jogo'); mostra(); };
+$('#bNext').onclick = () => { next(); if (!$('#final').classList.contains('hide')) montaFrases(); };
+$('#bPrev').onclick = prev;
+$('#bStep').onclick = () => { passo = Math.min(PASSOS.length, passo + 1); montaPassos(lista()[idx]); };
+$('#bAns').onclick = resposta;
+$('#tBtn').onclick = toggleTimer;
+$('#tReset').onclick = resetTimer;
+$('#bFull').onclick = () => { if (!document.fullscreenElement) { try { const pr = document.documentElement.requestFullscreen && document.documentElement.requestFullscreen(); if (pr && pr.catch) pr.catch(() => {}); } catch(e) {} } else { try { document.exitFullscreen(); } catch(e) {} } };
+document.addEventListener('keydown', e => {
+  if (!$('#roleta').classList.contains('hide')) { if (e.key === ' ' || e.key === 'Enter') { e.preventDefault(); if ($('#bAbrir').classList.contains('hide')) girar(); else abrirSorteada(); } return; }
+  if ($('#jogo').classList.contains('hide')) return;
+  if (e.key === 'ArrowRight') { next(); if (!$('#final').classList.contains('hide')) montaFrases(); }
+  else if (e.key === 'ArrowLeft') prev();
+  else if (e.key === ' ') { e.preventDefault(); toggleTimer(); }
+  else if (e.key.toLowerCase() === 'p' && MODO !== 'aluno') $('#bStep').click();
+  else if (e.key.toLowerCase() === 'r') resposta();
+  else if (e.key.toLowerCase() === 'f') $('#bFull').click();
+});
+</script>
+</body>
+</html>
